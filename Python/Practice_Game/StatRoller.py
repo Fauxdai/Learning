@@ -27,11 +27,11 @@ def stats():
         print(str(statname) + str(corestats))
         
 # ------- This formats the function for (hopefully) better readability. 
-print("##########")
+print("-----STATS-----")
 print("")
 stats()
 print("")
-print("##########")
+print("_______________")
 # ------- End of Function
 
 
@@ -52,21 +52,21 @@ while roll.lower() not in ("Yes"):
     elif roll == "Exit":
         exit()
     elif roll == "yes":
-        print("##########")
+        print("-----STATS-----")
         print("")
         stats()
         print("")
-        print("##########")
+        print("_______________")
         print("")
         roll = str.lower(input("Roll Again? Y/N/Exit: "))
         print ("")
         continue
     elif roll == "y":
-        print("##########")
+        print("-----STATS-----")
         print("")
         stats()
         print("")
-        print("##########")
+        print("_______________")
         print("")
         roll = str.lower(input("Roll Again? Y/N/Exit: "))
         print("")
