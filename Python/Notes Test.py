@@ -1,75 +1,87 @@
+import os
 import tkinter as tk
+from tkinter import ttk
 
 # Dictionary to store notes
 notes = {'People': {}, 'Places': {}, 'Things that Happen': {}, 'Items': {}, 'History': {}, 'Knowledge': {}, 'Jokes': {}}
 
+
+
+# Function to display the last 5 logs
 def display_last_logs():
-    # Update a text widget in the GUI with the notes
-    # You need to implement this function.
+    for category, entries in notes.items():
+        if entries:
+            print(f"Category: {category}")
+            for title, description in list(entries.items())[-5:]:
+                print(f"Title: {title}")
+                print(f"Description: {description}")
+                print('-' * 30)
 
-def save_notes(session_num, game_title):
-    # Save the notes to a file from the GUI
-    # You need to implement this function.
+# Function to save notes to a text file
+def save_notes(session_num):
+    with open(f"session_{session_num}_notes.txt", 'w') as file:
+        for category, entries in notes.items():
+            for title, description in entries.items():
+                file.write(f"Category: {category}\n")
+                file.write(f"Title: {title}\n")
+                file.write(f"Description: {description}\n")
+                file.write('-' * 30 + '\n')
 
-def handle_choice(choice, session_num=None, game_title=None):
-    if choice == '8':
-        if session_num and game_title:  # Check if both session_num and game_title are provided
-            save_notes(session_num, game_title)
-        root.destroy()
-    else:
-        category = list(notes.keys())[int(choice) - 1]
-        title = title_entry.get()
-        description = description_entry.get("1.0", "end-1c")  # Get text from a Text widget
-        if title in notes[category]:
-            notes[category][title] += '\n' + description
-        else:
-            notes[category][title] = description
-        display_last_logs()  # Update the display in the GUI
+# Function to handle the "Save and Exit" button click event
+def save_and_exit():
+    session_num_entry = (input(str))
+    session_num = session_num_entry.get()
+    save_notes(session_num)
+    root.destroy()
 
+# Main menu loop
 root = tk.Tk()
-root.title("D&D Note-Logging App")
+root.title("TTRPG Notatilator V.1")
 
 # Create and configure GUI elements
+label = tk.Label(root, text="Choose a category below, write a title, then write a description for entry!")
+label.pack()
+
 category_label = tk.Label(root, text="Choose a category:")
 category_label.pack()
 
-category_choices = ["People", "Places", "Things that Happen", "Items", "History", "Knowledge", "Jokes"]
-category_var = tk.StringVar()
-category_var.set(category_choices[0])
-category_menu = tk.OptionMenu(root, category_var, *category_choices)
-category_menu.pack()
+category_var = tk.StringVar(value='People')
+category_dropdown = ttk.Combobox(root, textvariable=category_var, values=list(notes.keys()))
+category_dropdown.pack()
 
-title_label = tk.Label(root, text="Enter a title:")
+title_label = tk.Label(root, text="Enter a title (48 characters):")
 title_label.pack()
-title_entry = tk.Entry(root)
+
+title_entry = tk.Entry(root, width=48)
 title_entry.pack()
 
-description_label = tk.Label(root, text="Enter a description:")
+description_label = tk.Label(root, text="Enter a description (140 characters):")
 description_label.pack()
-description_entry = tk.Text(root, height=5, width=40)
+
+description_entry = tk.Entry(root, width=140)
 description_entry.pack()
 
-session_label = tk.Label(root, text="Enter session number:")
-session_label.pack()
-session_num_entry = tk.Entry(root)
-session_num_entry.pack()
+save_exit_button = tk.Button(root, text="Save and Exit", command=save_and_exit)
+save_exit_button.pack()
 
-game_title_label = tk.Label(root, text="Enter the title of the game:")
-game_title_label.pack()
-game_title_entry = tk.Entry(root)
-game_title_entry.pack()
-
-exit_button = tk.Button(root, text="Exit", command=lambda: handle_choice('8'))
-exit_button.pack()
-
-save_button = tk.Button(root, text="Save", command=lambda: handle_choice(category_var.get(), session_num_entry.get(), game_title_entry.get()))
-save_button.pack()
-
-root.mainloop()
+while True:
+    root.update()
+    choice = category_var.get()
+    if choice == 'Exit':
+        session_num = session_num_entry.get()
+        save_notes(session_num)
+        break
 
 
+    if choice in notes:
+        category = choice
+        title = title_entry.get()
 
+        if title in notes[category]:
+            description = description_entry.get()
+            notes[category][title] += '\n' + description
+        else:
+            description = description_entry.get()
+            notes[category][title] = description
 
-
-
-
+# End of the program

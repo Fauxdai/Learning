@@ -26,7 +26,10 @@ def save_notes(session_num):
 # Main menu loop
 while True:
     os.system('cls' if os.name == 'nt' else 'clear')  # Clear the terminal screen
-    print("D&D Note-Logging App")
+    print("------------------ WELCOME TO THE TTRPG Notatilator V.1! ------------------")
+    print("Choose a category below, Write a title, Then write a description for entry!")
+    print("To append an entry, simply duplicate your title")
+    print("---------------------------------------------------------------------------")
     display_last_logs()
     print("\nChoose a category:")
     print("1. People")
