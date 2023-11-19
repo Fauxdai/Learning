@@ -1,5 +1,6 @@
 import csv
 import os
+import statistics
 from statistics import mode
 
 def read(file_path):
