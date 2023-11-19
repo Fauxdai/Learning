@@ -103,9 +103,10 @@ def main():
         csvreaded = sorted(csvreaded)
         csvsort = sorted(csvreaded, key=lambda row:row[5], reverse=True)
         for row in csvsort:
+            csvsort = sorted(csvreaded, key=lambda row:row[5], reverse=True)
             print(" || {:<30} ".format(str(row[0]))," || {:<30} ".format(str(row[1])),
               " || {:<15} ".format(str(row[2]))," || {:<15} ".format(str(row[3])),
-              " || {:<15} ".format(str(row[4]))," || {:<15} ".format(str(row[5])))
+              " || {:<15} ".format(str(row[4]))," || {:<15} ".format(int(row[5])))
         
     print("}-------------------------------{")
     input("Press Enter to Continue")
