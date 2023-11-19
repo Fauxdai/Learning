@@ -15,7 +15,7 @@ def read(file_path):
 
 def get_username():
     os.system('cls' if os.name == "nt" else "clear")
-    print(")-----------Welcome to Dice Analyzer v.1-----------(")
+    print(")-----------Welcome to Dice Analyzer v.2-----------(")
     name = input("\nEnter your name: ")
     print("----------------------------------------------------")
     return name
