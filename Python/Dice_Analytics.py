@@ -9,7 +9,7 @@ def read(file_path):
             data = list(reader)
     else:
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
-        data = [['Name', 'Rolls', 'Sum', 'Average', 'Mode']]
+        data = [['Name', 'Rolls', 'Sum', 'Average', 'Mode', 'score']]
     return data
 
 def get_username():
@@ -36,17 +36,23 @@ def get_dice_rolls():
     return rolls
 
 def calculate_statistics(rolls):
+    global total
     total = sum(rolls)
     average = total / float(len(rolls))
 
     try:
+        global mode_value
         mode_value = mode(rolls)
     except statistics.StatisticsError:
         mode_value = "No unique mode"
 
-    return total, average, mode_value
+    
+    return total, average, mode_value,
+def calculate_score():
+    global score_value
+    score_value = total * mode_value
 
-def display_results(username, rolls, total, average, mode_value):
+def display_results(username, rolls, total, average, mode_value, score_value):
     os.system('cls' if os.name == "nt" else "clear")
     print("=================================================")
     print(f"Your name is: {username}")
@@ -55,6 +61,7 @@ def display_results(username, rolls, total, average, mode_value):
     print("Your roll total is:", total)
     print("Your average is:", average)
     print("Your mode is:", mode_value)
+    print("Your score is: ", score_value)
     print("=================================================")
 
 def save_to_csv(file_path, data):
@@ -69,12 +76,13 @@ def main():
     username = get_username()
     rolls = get_dice_rolls()
     total, average, mode_value = calculate_statistics(rolls)
+    calculate_score()
 
-    entry = [username, rolls, total, average, mode_value]
+    entry = [username, rolls, total, average, mode_value, score_value]
     
     data = read(file_path)
 
-    display_results(username, rolls, total, average, mode_value)
+    display_results(username, rolls, total, average, mode_value, score_value)
 
     input("Press Enter to Continue")
     os.system('cls' if os.name == "nt" else "clear")
@@ -84,8 +92,20 @@ def main():
     save_to_csv(file_path, data)
 
     print("}---------- RESULTS ----------{")
-    for row in data:
-        print(" || {:<20} ".format(str(row[0]))," || {:<30} ".format(str(row[1]))," || {:<15} ".format(str(row[2]))," || {:<15} ".format(str(row[3]))," || {:<15} ".format(str(row[4])))
+    with open(file_path) as file:
+
+        csvreaded = csv.reader(file)
+        header = next(csvreaded)
+        
+        print(" || {:<30} ".format("Name")," || {:<30} ".format("Rolls")," || {:<15} ".format("Sum"),
+          " || {:<15} ".format("Average")," || {:<15} ".format("Mode")," || {:<15} ".format("Score"))
+        csvreaded = sorted(csvreaded)
+        csvsort = sorted(csvreaded, key=lambda row:row[5], reverse=True)
+        for row in csvsort:
+            print(" || {:<30} ".format(str(row[0]))," || {:<30} ".format(str(row[1])),
+              " || {:<15} ".format(str(row[2]))," || {:<15} ".format(str(row[3])),
+              " || {:<15} ".format(str(row[4]))," || {:<15} ".format(str(row[5])))
+        
     print("}-------------------------------{")
     input("Press Enter to Continue")
     os.system('cls' if os.name == "nt" else "clear")
