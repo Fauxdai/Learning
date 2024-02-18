@@ -21,8 +21,8 @@ def save_notes(session_num):
             file.write(f"\nCategory: {category}\n")
             file.write('#' * 60 + '\n')
             for title, description in entries.items():
-                file.write(f"Title: {title}\n")
-                file.write(f"Description: {description}\n")
+                file.write(f"--Title: {title}\n")
+                file.write(f"--Description: \n\n{description}\n")
                 file.write('-' * 30 + '\n')
                 
                 
