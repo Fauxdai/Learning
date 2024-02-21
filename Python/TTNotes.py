@@ -1,70 +1,81 @@
-import tkinter as tk
+import os
+from colorama import init as colorama_init
+from colorama import Fore
+from colorama import Style
+
+colorama_init()
 
 # Dictionary to store notes
-notes = {'People': {}, 'Places': {}, 'Things that Happen': {}, 'Items': {}, 'History': {}, 'Knowledge': {}, 'Jokes': {}}
+notes = {'People': {}, 'Places': {}, 'Things that Happen': {}, 'Items': {}, 'History': {}, 'Knowledge': {}, 'Jokes': {}, 'Meta':{}}
 
+# Function to display the last 5 logs
 def display_last_logs():
-    # You should modify this function to update a text widget in the GUI
-    pass
+    for category, entries in notes.items():
+        if entries:
+            print(Fore.LIGHTMAGENTA_EX + f"---------- Category: {category} ----------")
+            for title, description in list(entries.items())[-5:]:
+                print(Fore.LIGHTGREEN_EX + f"-Title: {title.capitalize()}")
+                print(Fore.LIGHTMAGENTA_EX + f"--Description: \n\n - {description}\n")
+                print(Fore.LIGHTMAGENTA_EX + '---' * 30)
 
-def save_notes(session_num, game_title):
-    # You should modify this function to save the notes to a file from the GUI
-    pass
+# Function to save notes to a text file
+def save_notes(session_num):
+    with open(f"session_{session_num}_notes.txt", 'w') as file:
+        for category, entries in notes.items():
+            for title, description in entries.items():
+                file.write(f"---------- Category: {category} ---------\n")
+                file.write(f"-Title: {title.capitalize()}\n")
+                file.write(f"--Description:\n\n {description}\n")
+                file.write('---' * 30 + '\n')
 
-def handle_choice(choice):
-    if choice == '8':
-        session_num = session_num_entry.get()
-        game_title = game_title_entry.get()
-        save_notes(session_num, game_title)
-        root.destroy()
-    else:
+def displayBanner():
+    banner = f"""
+|------------------ WELCOME TO THE TTRPG Notatilator V.1! ------------------|
+|Choose a category below, Write a title, Then write a description for entry!|
+|To append an entry, simply duplicate your title")                          |
+|---------------------------------------------------------------------------|
+    """
+    print(Fore.CYAN + banner)
+
+def displayChoices():
+    choice = f"""
+Choose a category:
+1. People
+2. Places
+3. Things that Happen
+4. Items
+5. History
+6. Knowledge
+7. Jokes
+8. Meta/OOC
+9. Exit
+    """
+    print(Fore.GREEN + choice)
+
+# Main menu loop
+while True:
+    os.system('cls' if os.name == 'nt' else 'clear')  # Clear the terminal screen
+    displayBanner()
+    display_last_logs()
+    displayChoices()
+
+    choice = input("Enter your choice: ")
+
+    if choice == '9':
+        session_num = input("Enter session name: ")
+        save_notes(session_num)
+        break
+
+    if choice in {'1', '2', '3', '4', '5', '6', '7', '8'}:
         category = list(notes.keys())[int(choice) - 1]
-        title = title_entry.get()
-        description = description_entry.get("1.0", "end-1c")  # Get text from a Text widget
-        if title in notes[category]:
-            notes[category][title] += '\n' + description
+        title = input("  Enter a title: ")
+
+        if title.casefold() in notes[category]:
+            description = input("    Enter a description (append to the existing entry): ")
+            notes[category][title.casefold()] += '\n' + '\n' + "- " + description
         else:
-            notes[category][title] = description
-        display_last_logs()  # Update the display in the GUI
+            description = input("    Enter a description: ")
+            notes[category][title.casefold()] = description
 
-root = tk.Tk()
-root.title("D&D Note-Logging App")
-
-# Create and configure GUI elements
-category_label = tk.Label(root, text="Choose a category:")
-category_label.pack()
-
-category_choices = ["People", "Places", "Things that Happen", "Items", "History", "Knowledge", "Jokes"]
-category_var = tk.StringVar()
-category_var.set(category_choices[0])
-category_menu = tk.OptionMenu(root, category_var, *category_choices)
-category_menu.pack()
-
-title_label = tk.Label(root, text="Enter a title:")
-title_label.pack()
-title_entry = tk.Entry(root)
-title_entry.pack()
-
-description_label = tk.Label(root, text="Enter a description:")
-description_label.pack()
-description_entry = tk.Text(root, height=5, width=40)
-description_entry.pack()
-
-session_label = tk.Label(root, text="Enter session number:")
-session_label.pack()
-session_num_entry = tk.Entry(root)
-session_num_entry.pack()
-
-game_title_label = tk.Label(root, text="Enter the title of the game:")
-game_title_label.pack()
-game_title_entry = tk.Entry(root)
-game_title_entry.pack()
-
-exit_button = tk.Button(root, text="Exit", command=lambda: handle_choice('8'))
-exit_button.pack()
-
-save_button = tk.Button(root, text="Save", command=lambda: handle_choice(category_var.get()))
-save_button.pack()
-
-root.mainloop()
+# End of the program
 
