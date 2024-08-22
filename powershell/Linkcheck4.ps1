@@ -1,41 +1,6 @@
 # Define the list of links
 $links = @(
-"https://intral.com",
-"https://clients.intral.com",
-"https://clientstest.intral.com",
-"https://dps.intral.com",
-"https://fulflex.intral.com",
-"https://fulflextest.intral.com",
-"https://iccreporting.intral.com",
-"https://idea.intral.com",
-"https://igt.intral.com",
-"https://igtstaging.intral.com",
-"https://intralinktms.intral.com",
-"https://intralship.intral.com",
-"https://ishiptest.intral.com",
-"https://linkadmin.intral.com",
-"https://materne.intral.com",
-"https://maternestaging.intral.com",
-"https://moore.intral.com",
-"https://pepsi.intral.com",
-"https://phpadmin.intral.com",
-"https://techticket.intral.com",
-"https://testintralink.intral.com",
-"https://testsite.intral.com",
-"https://tms.intral.com",
-"https://tmsadmin.intral.com",
-"https://tmsstaging.intral.com",
-"https://tmstestlive.intral.com",
-"https://tracking.intral.com",
-"https://ums.intral.com",
-"https://umsstaging.intral.com",
-"https://umstestlive.intral.com",
-"https://upfield.intral.com",
-"https://upfieldstaging.intral.com",
-"https://www2.intral.com",
-"https://umscloud.intral.com",
-"https://umsqa.intral.com",
-"https://umsuat.intral.com"
+
 )
 
 # Function to get SSL certificate expiration date
