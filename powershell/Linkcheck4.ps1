@@ -2,7 +2,7 @@
 $links = @(
 
 )
-
+ipconfig /flushdns
 # Function to get SSL certificate expiration date
 function Get-SSLCertificateExpiration {
     param (
